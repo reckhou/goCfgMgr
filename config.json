@@ -1,0 +1,13 @@
+{
+  "basic": {
+    "Port": ":8080",
+    "Host": "http://www.example.com",
+  },
+  "projects": {
+    "project1": {
+      "Alias": "testProject",
+      "Type": "Private"
+    }
+  },
+  "additional": {}
+}
