@@ -9,13 +9,12 @@ import (
 
 var (
   cfgFile    = "config.json"
-  cfgPath    = ""
-  cfgContent string
   cfgMap     map[string]interface{}
+  debugEnabled = false
 )
 
 func init() {
-  cfgPath, _ = osext.ExecutableFolder()
+  cfgPath, _ := osext.ExecutableFolder()
   cfgPath += "config/" + cfgFile
   log.Println("cfgPath:", cfgPath)
 
@@ -31,8 +30,10 @@ func init() {
   file.Read(data)
 
   file.Close()
-  cfgContent = string(data)
-  //log.Println("cfgContent:", cfgContent)
+  cfgContent := string(data)
+  if debugEnabled {
+    log.Println("cfgContent:", cfgContent)
+  }
 
   cfgJson, errJS := js.NewJson([]byte(cfgContent))
   if errJS != nil {
@@ -46,13 +47,15 @@ func init() {
     os.Exit(1)
   }
 
-  //log.Println(cfgMap)
+  if debugEnabled {
+    log.Println(cfgMap)
+  }
 }
 
 func Get(field string, keys interface{}) interface{} {
   m, ok := cfgMap[field]
   if !ok {
-    log.Println("Invalid field", field, "in config file")
+    log.Println("Field", field, "not found in config file.")
     return nil
   }
 
